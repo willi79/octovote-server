@@ -6,6 +6,6 @@ export async function connectDB(uri: string = env.mongoUri): Promise<typeof mong
     return mongoose.connect(uri);
 }
 
-export async function disconnectDB(uri: string = env.mongoUri): Promise<void> {
+export async function disconnectDB(): Promise<void> {
     await mongoose.disconnect();
 }
