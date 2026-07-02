@@ -1,7 +1,6 @@
-import { ICandidateRepository } from './i-candidate.repository';
 import { CreateUserDto, IUserRepository, UpdateUserDto } from './i-user.repository';
-import { User, UserInterface } from '../model/user';
 import { StringHelper } from '../helper/string.helper';
+import { User, UserInterface } from '../model/user';
 
 export class UserRepository implements IUserRepository {
     async findById(id: string): Promise<UserInterface | null> {
@@ -16,6 +15,10 @@ export class UserRepository implements IUserRepository {
         return User.findOne({
             name: new RegExp(`^${StringHelper.escapeRegex(name)}$`, 'i'),
         });
+    }
+
+    async findByEmail(email: string): Promise<UserInterface | null> {
+        return User.findOne({ email: email.toLowerCase() });
     }
 
     async create(dto: CreateUserDto): Promise<UserInterface> {
