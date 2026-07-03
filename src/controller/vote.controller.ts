@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { VoteService } from '../service/vote.service';
 import { CandidateInterface } from '../model/candidate';
 import { VoteResults } from '../interface/vote.interface';
+import { AuthenticatedRequest } from '../interface/auth.interface';
 
 export class VoteController {
     constructor(private readonly voteService: VoteService) {}
@@ -16,10 +17,10 @@ export class VoteController {
         }
     }
 
-    async castVote(req: Request, res: Response): Promise<void> {
+    async castVote(req: AuthenticatedRequest, res: Response): Promise<void> {
         try {
+            const userId: string = req.user!.id;
             const { name } = req.body;
-            const userId: string = req.params.userId;
             const candidate: CandidateInterface = await this.voteService.castVote(userId, name);
             res.status(201).json({ candidate });
         } catch (error) {
