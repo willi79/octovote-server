@@ -1,12 +1,13 @@
 import bcrypt from 'bcryptjs';
-import { Model, model, Schema, Types } from 'mongoose';
+
+import { Document, Model, model, Schema, Types } from 'mongoose';
 
 export enum UserRole {
     Admin = 'admin',
     User = 'user',
 }
 
-export interface UserInterface {
+export interface UserInterface extends Document {
     _id: Types.ObjectId;
     name: string;
     email: string;
@@ -14,6 +15,7 @@ export interface UserInterface {
     role: UserRole;
     hasVoted: boolean;
     votedFor?: Types.ObjectId;
+    comparePassword(password: string): Promise<boolean>;
 }
 
 const userSchema = new Schema<UserInterface>(
@@ -36,5 +38,9 @@ userSchema.pre('save', async function (next: any): Promise<void> {
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
+
+userSchema.methods.comparePassword = function (password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+};
 
 export const User: Model<UserInterface> = model<UserInterface>('User', userSchema);

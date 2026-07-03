@@ -1,12 +1,16 @@
 import express, { Express, Request, Response } from 'express';
-import { UserRepository } from './repository/user.repository';
+
+import { AuthController } from './controller/auth.controller';
+import { AuthService } from './service/auth.service';
 import { CandidateRepository } from './repository/candidate.repository';
-import { VoteService } from './service/vote.service';
+import { UserController } from './controller/user.controller';
+import { UserRepository } from './repository/user.repository';
 import { UserService } from './service/user.service';
 import { VoteController } from './controller/vote.controller';
-import { UserController } from './controller/user.controller';
-import { createVoteRouter } from './route/vote.route';
+import { VoteService } from './service/vote.service';
+import { createAuthRouter } from './route/auth.route';
 import { createUserRouter } from './route/user.route';
+import { createVoteRouter } from './route/vote.route';
 
 export const createApp = (): Express => {
     const app: Express = express();
@@ -21,14 +25,17 @@ export const createApp = (): Express => {
     // services
     const voteService = new VoteService(candidateRepository, userRepository);
     const userService = new UserService(userRepository);
+    const authService = new AuthService(userRepository);
 
     // controllers
     const voteController = new VoteController(voteService);
     const userController = new UserController(userService);
+    const authController = new AuthController(authService);
 
     // routes
     app.use('/api/vote', createVoteRouter(voteController));
     app.use('/api/user', createUserRouter(userController));
+    app.use('/api/auth', createAuthRouter(authController));
 
     // health check
     app.get('/health', (_req: Request, res: Response) => {
