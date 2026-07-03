@@ -6,10 +6,13 @@
     "license": "MIT",
     "scripts": {
         "build": "tsc -p tsconfig.json",
+        "prestart": "yarn build",
         "start": "node dist/server.js",
         "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
         "seed:admin": "ts-node scripts/seedAdmin.ts",
         "test": "jest --runInBand --detectOpenHandles",
+        "test:unit": "jest --runInBand --detectOpenHandles --testPathPattern=test/unit",
+        "test:integration": "jest --runInBand --detectOpenHandles --testPathPattern=test/integration",
         "test:watch": "jest --runInBand --watch",
         "test:coverage": "jest --runInBand --coverage",
         "lint": "eslint 'src/**/*.ts' 'test/**/*.ts'",

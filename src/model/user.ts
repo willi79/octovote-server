@@ -39,6 +39,13 @@ userSchema.pre('save', async function (next: any): Promise<void> {
     next();
 });
 
+userSchema.set('toJSON', {
+    transform: (_doc: Document, ret: any): any => {
+        delete ret.password;
+        return ret;
+    },
+});
+
 userSchema.methods.comparePassword = function (password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
 };

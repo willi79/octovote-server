@@ -31,11 +31,11 @@ export class CandidateRepository implements ICandidateRepository {
     }
 
     async incrementOrCreateCandidate(name: string): Promise<CandidateInterface> {
-        const trimmed = name.trim();
+        const trimmed: string = name.trim();
         return Candidate.findOneAndUpdate(
             { name: new RegExp(`^${StringHelper.escapeRegex(trimmed)}$`, 'i') },
             { $inc: { votes: 1 }, $setOnInsert: { name: trimmed } },
-            { new: true, upsert: true }
+            { new: true, upsert: true, strict: false }
         ) as Promise<CandidateInterface>;
     }
 }
