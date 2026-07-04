@@ -85,3 +85,11 @@ test/
   unit/          # pure logic tests (no DB)
   integration/   # full HTTP stack tests
 ```
+
+## Live Demo
+
+- **App:** https://octovote-fe.vercel.app
+- **Backend:** https://octovote-server.onrender.com
+
+> Backend is hosted on Render's free tier and sleeps after 15 minutes of inactivity.
+> First request may take ~1 minute while the service wakes up.
