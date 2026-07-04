@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const raw: string = process.env.CORS_ORIGIN || '*';
+
 export const env = {
     port: process.env.PORT || 3000,
     mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/octovote',
@@ -11,5 +13,5 @@ export const env = {
     adminPassword: process.env.ADMIN_PASSWORD || 'admin123',
     adminName: process.env.ADMIN_NAME || 'Administrator',
     seedAdmin: process.env.SEED_ADMIN || 'false',
-    corsOrigin: (process.env.CORS_ORIGIN || 'http://localhost:4200').split(',').map((o) => o.trim()), // comma-split this if you need multiple origins
+    corsOrigin: raw === '*' ? '*' : raw.split(',').map((o) => o.trim()),
 };
