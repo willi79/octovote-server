@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 
 import { AuthController } from './controller/auth.controller';
@@ -11,11 +12,17 @@ import { VoteService } from './service/vote.service';
 import { createAuthRouter } from './route/auth.route';
 import { createUserRouter } from './route/user.route';
 import { createVoteRouter } from './route/vote.route';
+import { env } from './config/environment';
 
 export const createApp = (): Express => {
     const app: Express = express();
 
     // middleware
+    app.use(
+        cors({
+            origin: env.corsOrigin,
+        })
+    );
     app.use(express.json());
 
     // repositories
