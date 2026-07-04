@@ -6,6 +6,15 @@ export interface CandidateInterface {
     votes: number;
 }
 
-const candidateSchema = new Schema<CandidateInterface>();
+const candidateSchema = new Schema<CandidateInterface>({
+    name: {
+        type: String,
+        required: true,
+    },
+    votes: {
+        type: Number,
+        default: 0,
+    },
+});
 
 export const Candidate: Model<CandidateInterface> = model<CandidateInterface>('Candidate', candidateSchema);
